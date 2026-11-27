@@ -1,0 +1,774 @@
+{
+  "evaluation_type": "reference_only",
+  "llm_evaluated": false,
+  "evaluated_at": "2026-11-24T08:22:31.972686+00:00",
+  "reference_date": "2026-11-23",
+  "model": null,
+  "dataset_sha256": "85cd728c20bafff85ccba03f1a7522b8ed703a7095dd6f8d285495e746858220",
+  "database_name": "library_demo_ff638ddf",
+  "snapshot": "MySQL REPEATABLE READ WITH CONSISTENT SNAPSHOT, READ ONLY",
+  "limits": {
+    "max_rows": 200,
+    "max_execution_ms": 2000
+  },
+  "note": "정답 SQL 실행 검증이며 LLM 정확도 측정이 아님",
+  "results": [
+    {
+      "id": "L1-01",
+      "level": 1,
+      "question": "분류가 컴퓨터인 도서의 도서번호, 제목을 도서번호 오름차순으로 보여줘.",
+      "intent": "단일 테이블 조건 검색",
+      "ordered": true,
+      "reference_sql": "SELECT book_id, title FROM book WHERE category = '컴퓨터' ORDER BY book_id",
+      "reference_result": {
+        "sql": "SELECT book_id, title FROM book WHERE category = '컴퓨터' ORDER BY book_id LIMIT 201",
+        "columns": [
+          "book_id",
+          "title"
+        ],
+        "rows": [
+          {
+            "book_id": 1,
+            "title": "데이터베이스 설계 실습"
+          },
+          {
+            "book_id": 2,
+            "title": "처음 배우는 SQL"
+          },
+          {
+            "book_id": 3,
+            "title": "자바 프로그래밍 워크북"
+          },
+          {
+            "book_id": 4,
+            "title": "파이썬으로 만드는 웹 서비스"
+          },
+          {
+            "book_id": 5,
+            "title": "컴퓨터 네트워크의 이해"
+          },
+          {
+            "book_id": 6,
+            "title": "자료구조와 알고리즘 노트"
+          },
+          {
+            "book_id": 7,
+            "title": "인공지능과 일상의 질문"
+          },
+          {
+            "book_id": 17,
+            "title": "운영체제 원리 실습"
+          },
+          {
+            "book_id": 18,
+            "title": "졸업 프로젝트 기록법"
+          }
+        ],
+        "column_types": [
+          3,
+          253
+        ],
+        "row_count": 9,
+        "truncated": false,
+        "execution_ms": 1.44
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L1-02",
+      "level": 1,
+      "question": "정상 이용 상태인 회원의 회원번호, 이름을 회원번호 순서로 보여줘.",
+      "intent": "회원 상태 코드 해석",
+      "ordered": true,
+      "reference_sql": "SELECT member_id, name FROM member WHERE status = 'ACTIVE' ORDER BY member_id",
+      "reference_result": {
+        "sql": "SELECT member_id, name FROM member WHERE status = 'ACTIVE' ORDER BY member_id LIMIT 201",
+        "columns": [
+          "member_id",
+          "name"
+        ],
+        "rows": [
+          {
+            "member_id": 1,
+            "name": "테스트회원01"
+          },
+          {
+            "member_id": 2,
+            "name": "테스트회원02"
+          },
+          {
+            "member_id": 3,
+            "name": "테스트회원03"
+          },
+          {
+            "member_id": 4,
+            "name": "테스트회원04"
+          },
+          {
+            "member_id": 5,
+            "name": "테스트회원05"
+          },
+          {
+            "member_id": 8,
+            "name": "테스트회원08"
+          }
+        ],
+        "column_types": [
+          3,
+          253
+        ],
+        "row_count": 6,
+        "truncated": false,
+        "execution_ms": 0.75
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L1-03",
+      "level": 1,
+      "question": "ISBN이 등록되지 않은 도서의 도서번호와 제목을 도서번호 순으로 보여줘.",
+      "intent": "선택 입력 NULL 처리",
+      "ordered": true,
+      "reference_sql": "SELECT book_id, title FROM book WHERE isbn IS NULL ORDER BY book_id",
+      "reference_result": {
+        "sql": "SELECT book_id, title FROM book WHERE isbn IS NULL ORDER BY book_id LIMIT 201",
+        "columns": [
+          "book_id",
+          "title"
+        ],
+        "rows": [
+          {
+            "book_id": 1,
+            "title": "데이터베이스 설계 실습"
+          },
+          {
+            "book_id": 2,
+            "title": "처음 배우는 SQL"
+          },
+          {
+            "book_id": 3,
+            "title": "자바 프로그래밍 워크북"
+          },
+          {
+            "book_id": 4,
+            "title": "파이썬으로 만드는 웹 서비스"
+          },
+          {
+            "book_id": 5,
+            "title": "컴퓨터 네트워크의 이해"
+          },
+          {
+            "book_id": 6,
+            "title": "자료구조와 알고리즘 노트"
+          },
+          {
+            "book_id": 7,
+            "title": "인공지능과 일상의 질문"
+          },
+          {
+            "book_id": 8,
+            "title": "공간을 읽는 기하학"
+          },
+          {
+            "book_id": 9,
+            "title": "생활 속 통계 이야기"
+          },
+          {
+            "book_id": 10,
+            "title": "대학생을 위한 글쓰기"
+          },
+          {
+            "book_id": 11,
+            "title": "우리 동네의 역사"
+          },
+          {
+            "book_id": 12,
+            "title": "작은 도서관의 하루"
+          },
+          {
+            "book_id": 13,
+            "title": "별빛이 머무는 정원"
+          },
+          {
+            "book_id": 14,
+            "title": "경제를 배우는 첫 수업"
+          },
+          {
+            "book_id": 15,
+            "title": "함께 사는 도시"
+          },
+          {
+            "book_id": 16,
+            "title": "환경을 위한 작은 실천"
+          },
+          {
+            "book_id": 17,
+            "title": "운영체제 원리 실습"
+          },
+          {
+            "book_id": 18,
+            "title": "졸업 프로젝트 기록법"
+          }
+        ],
+        "column_types": [
+          3,
+          253
+        ],
+        "row_count": 18,
+        "truncated": false,
+        "execution_ms": 0.85
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L1-04",
+      "level": 1,
+      "question": "분실 상태인 소장 도서의 관리번호와 보관위치를 관리번호 순으로 보여줘.",
+      "intent": "소장 상태 조건",
+      "ordered": true,
+      "reference_sql": "SELECT owned_id, location FROM owned_book WHERE status = 'LOST' ORDER BY owned_id",
+      "reference_result": {
+        "sql": "SELECT owned_id, location FROM owned_book WHERE status = 'LOST' ORDER BY owned_id LIMIT 201",
+        "columns": [
+          "owned_id",
+          "location"
+        ],
+        "rows": [
+          {
+            "owned_id": "B020",
+            "location": "실습자료실 3구역"
+          }
+        ],
+        "column_types": [
+          253,
+          253
+        ],
+        "row_count": 1,
+        "truncated": false,
+        "execution_ms": 1.0
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L2-01",
+      "level": 2,
+      "question": "미반납 대출의 대출번호, 회원 이름, 도서 제목, 반납예정일을 대출번호 순으로 보여줘.",
+      "intent": "네 테이블 JOIN과 미반납 필터",
+      "ordered": true,
+      "reference_sql": "SELECT l.loan_id, m.name, b.title, l.due_date FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL ORDER BY l.loan_id",
+      "reference_result": {
+        "sql": "SELECT l.loan_id, m.name, b.title, l.due_date FROM loan AS l JOIN member AS m ON m.member_id = l.member_id JOIN owned_book AS o ON o.owned_id = l.owned_id JOIN book AS b ON b.book_id = o.book_id WHERE l.return_date IS NULL ORDER BY l.loan_id LIMIT 201",
+        "columns": [
+          "loan_id",
+          "name",
+          "title",
+          "due_date"
+        ],
+        "rows": [
+          {
+            "loan_id": 1,
+            "name": "테스트회원01",
+            "title": "데이터베이스 설계 실습",
+            "due_date": "2026-12-04"
+          },
+          {
+            "loan_id": 2,
+            "name": "테스트회원02",
+            "title": "처음 배우는 SQL",
+            "due_date": "2026-11-17"
+          },
+          {
+            "loan_id": 3,
+            "name": "테스트회원03",
+            "title": "자바 프로그래밍 워크북",
+            "due_date": "2026-11-23"
+          },
+          {
+            "loan_id": 4,
+            "name": "테스트회원04",
+            "title": "파이썬으로 만드는 웹 서비스",
+            "due_date": "2026-12-05"
+          },
+          {
+            "loan_id": 5,
+            "name": "테스트회원04",
+            "title": "컴퓨터 네트워크의 이해",
+            "due_date": "2026-12-05"
+          },
+          {
+            "loan_id": 6,
+            "name": "테스트회원04",
+            "title": "자료구조와 알고리즘 노트",
+            "due_date": "2026-12-05"
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          253,
+          10
+        ],
+        "row_count": 6,
+        "truncated": false,
+        "execution_ms": 1.43
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L2-02",
+      "level": 2,
+      "question": "모든 도서의 도서번호, 제목, 정상 소장 권수를 도서번호 순으로 보여줘. 정상 소장본이 없는 도서는 0권으로 표시해.",
+      "intent": "LEFT JOIN과 0건 보존",
+      "ordered": true,
+      "reference_sql": "SELECT b.book_id, b.title, COUNT(o.owned_id) AS normal_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' GROUP BY b.book_id,b.title ORDER BY b.book_id",
+      "reference_result": {
+        "sql": "SELECT b.book_id, b.title, COUNT(o.owned_id) AS normal_count FROM book AS b LEFT JOIN owned_book AS o ON o.book_id = b.book_id AND o.status = 'NORMAL' GROUP BY b.book_id, b.title ORDER BY b.book_id LIMIT 201",
+        "columns": [
+          "book_id",
+          "title",
+          "normal_count"
+        ],
+        "rows": [
+          {
+            "book_id": 1,
+            "title": "데이터베이스 설계 실습",
+            "normal_count": 2
+          },
+          {
+            "book_id": 2,
+            "title": "처음 배우는 SQL",
+            "normal_count": 2
+          },
+          {
+            "book_id": 3,
+            "title": "자바 프로그래밍 워크북",
+            "normal_count": 2
+          },
+          {
+            "book_id": 4,
+            "title": "파이썬으로 만드는 웹 서비스",
+            "normal_count": 2
+          },
+          {
+            "book_id": 5,
+            "title": "컴퓨터 네트워크의 이해",
+            "normal_count": 1
+          },
+          {
+            "book_id": 6,
+            "title": "자료구조와 알고리즘 노트",
+            "normal_count": 1
+          },
+          {
+            "book_id": 7,
+            "title": "인공지능과 일상의 질문",
+            "normal_count": 1
+          },
+          {
+            "book_id": 8,
+            "title": "공간을 읽는 기하학",
+            "normal_count": 1
+          },
+          {
+            "book_id": 9,
+            "title": "생활 속 통계 이야기",
+            "normal_count": 1
+          },
+          {
+            "book_id": 10,
+            "title": "대학생을 위한 글쓰기",
+            "normal_count": 1
+          },
+          {
+            "book_id": 11,
+            "title": "우리 동네의 역사",
+            "normal_count": 1
+          },
+          {
+            "book_id": 12,
+            "title": "작은 도서관의 하루",
+            "normal_count": 1
+          },
+          {
+            "book_id": 13,
+            "title": "별빛이 머무는 정원",
+            "normal_count": 1
+          },
+          {
+            "book_id": 14,
+            "title": "경제를 배우는 첫 수업",
+            "normal_count": 1
+          },
+          {
+            "book_id": 15,
+            "title": "함께 사는 도시",
+            "normal_count": 1
+          },
+          {
+            "book_id": 16,
+            "title": "환경을 위한 작은 실천",
+            "normal_count": 0
+          },
+          {
+            "book_id": 17,
+            "title": "운영체제 원리 실습",
+            "normal_count": 0
+          },
+          {
+            "book_id": 18,
+            "title": "졸업 프로젝트 기록법",
+            "normal_count": 0
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          8
+        ],
+        "row_count": 18,
+        "truncated": false,
+        "execution_ms": 1.74
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L2-03",
+      "level": 2,
+      "question": "모든 회원의 회원번호, 이름, 지금 빌린 책 수를 회원번호 순으로 보여줘. 현재 대출이 없는 회원도 0권으로 표시해.",
+      "intent": "과거 대출과 현재 대출을 구분한 집계",
+      "ordered": true,
+      "reference_sql": "SELECT m.member_id,m.name,COUNT(l.loan_id) AS current_count FROM member m LEFT JOIN loan l ON l.member_id=m.member_id AND l.return_date IS NULL GROUP BY m.member_id,m.name ORDER BY m.member_id",
+      "reference_result": {
+        "sql": "SELECT m.member_id, m.name, COUNT(l.loan_id) AS current_count FROM member AS m LEFT JOIN loan AS l ON l.member_id = m.member_id AND l.return_date IS NULL GROUP BY m.member_id, m.name ORDER BY m.member_id LIMIT 201",
+        "columns": [
+          "member_id",
+          "name",
+          "current_count"
+        ],
+        "rows": [
+          {
+            "member_id": 1,
+            "name": "테스트회원01",
+            "current_count": 1
+          },
+          {
+            "member_id": 2,
+            "name": "테스트회원02",
+            "current_count": 1
+          },
+          {
+            "member_id": 3,
+            "name": "테스트회원03",
+            "current_count": 1
+          },
+          {
+            "member_id": 4,
+            "name": "테스트회원04",
+            "current_count": 3
+          },
+          {
+            "member_id": 5,
+            "name": "테스트회원05",
+            "current_count": 0
+          },
+          {
+            "member_id": 6,
+            "name": "테스트회원06",
+            "current_count": 0
+          },
+          {
+            "member_id": 7,
+            "name": "테스트회원07",
+            "current_count": 0
+          },
+          {
+            "member_id": 8,
+            "name": "테스트회원08",
+            "current_count": 0
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          8
+        ],
+        "row_count": 8,
+        "truncated": false,
+        "execution_ms": 0.86
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L2-04",
+      "level": 2,
+      "question": "대출 이력이 한 번도 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",
+      "intent": "NOT EXISTS 상관 서브쿼리",
+      "ordered": true,
+      "reference_sql": "SELECT m.member_id,m.name FROM member m WHERE NOT EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) ORDER BY m.member_id",
+      "reference_result": {
+        "sql": "SELECT m.member_id, m.name FROM member AS m WHERE NOT EXISTS(SELECT 1 FROM loan AS l WHERE l.member_id = m.member_id) ORDER BY m.member_id LIMIT 201",
+        "columns": [
+          "member_id",
+          "name"
+        ],
+        "rows": [
+          {
+            "member_id": 8,
+            "name": "테스트회원08"
+          }
+        ],
+        "column_types": [
+          3,
+          253
+        ],
+        "row_count": 1,
+        "truncated": false,
+        "execution_ms": 0.9
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L3-01",
+      "level": 3,
+      "question": "모든 도서의 도서번호, 제목, 지금 대출 가능한 권수를 도서번호 순으로 알려줘. 대출 가능한 책이 없어도 0으로 보여줘.",
+      "intent": "정상 상태와 미반납 대출 부재를 동시에 적용",
+      "ordered": true,
+      "reference_sql": "SELECT b.book_id,b.title,COUNT(o.owned_id) AS available_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' AND NOT EXISTS (SELECT 1 FROM loan l WHERE l.owned_id=o.owned_id AND l.return_date IS NULL) GROUP BY b.book_id,b.title ORDER BY b.book_id",
+      "reference_result": {
+        "sql": "SELECT b.book_id, b.title, COUNT(o.owned_id) AS available_count FROM book AS b LEFT JOIN owned_book AS o ON o.book_id = b.book_id AND o.status = 'NORMAL' AND NOT EXISTS(SELECT 1 FROM loan AS l WHERE l.owned_id = o.owned_id AND l.return_date IS NULL) GROUP BY b.book_id, b.title ORDER BY b.book_id LIMIT 201",
+        "columns": [
+          "book_id",
+          "title",
+          "available_count"
+        ],
+        "rows": [
+          {
+            "book_id": 1,
+            "title": "데이터베이스 설계 실습",
+            "available_count": 1
+          },
+          {
+            "book_id": 2,
+            "title": "처음 배우는 SQL",
+            "available_count": 1
+          },
+          {
+            "book_id": 3,
+            "title": "자바 프로그래밍 워크북",
+            "available_count": 1
+          },
+          {
+            "book_id": 4,
+            "title": "파이썬으로 만드는 웹 서비스",
+            "available_count": 1
+          },
+          {
+            "book_id": 5,
+            "title": "컴퓨터 네트워크의 이해",
+            "available_count": 0
+          },
+          {
+            "book_id": 6,
+            "title": "자료구조와 알고리즘 노트",
+            "available_count": 0
+          },
+          {
+            "book_id": 7,
+            "title": "인공지능과 일상의 질문",
+            "available_count": 1
+          },
+          {
+            "book_id": 8,
+            "title": "공간을 읽는 기하학",
+            "available_count": 1
+          },
+          {
+            "book_id": 9,
+            "title": "생활 속 통계 이야기",
+            "available_count": 1
+          },
+          {
+            "book_id": 10,
+            "title": "대학생을 위한 글쓰기",
+            "available_count": 1
+          },
+          {
+            "book_id": 11,
+            "title": "우리 동네의 역사",
+            "available_count": 1
+          },
+          {
+            "book_id": 12,
+            "title": "작은 도서관의 하루",
+            "available_count": 1
+          },
+          {
+            "book_id": 13,
+            "title": "별빛이 머무는 정원",
+            "available_count": 1
+          },
+          {
+            "book_id": 14,
+            "title": "경제를 배우는 첫 수업",
+            "available_count": 1
+          },
+          {
+            "book_id": 15,
+            "title": "함께 사는 도시",
+            "available_count": 1
+          },
+          {
+            "book_id": 16,
+            "title": "환경을 위한 작은 실천",
+            "available_count": 0
+          },
+          {
+            "book_id": 17,
+            "title": "운영체제 원리 실습",
+            "available_count": 0
+          },
+          {
+            "book_id": 18,
+            "title": "졸업 프로젝트 기록법",
+            "available_count": 0
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          8
+        ],
+        "row_count": 18,
+        "truncated": false,
+        "execution_ms": 1.23
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L3-02",
+      "level": 3,
+      "question": "현재 연체 중인 대출의 대출번호, 회원 이름, 도서 제목, 연체 일수를 대출번호 순으로 보여줘. 오늘이 반납예정일인 책과 이미 반납한 책은 제외해.",
+      "intent": "현재 연체의 날짜 경계와 과거 지연 반납 제외",
+      "ordered": true,
+      "reference_sql": "SELECT l.loan_id,m.name,b.title,DATEDIFF('2026-11-23',l.due_date) AS overdue_days FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL AND l.due_date < '2026-11-23' ORDER BY l.loan_id",
+      "reference_result": {
+        "sql": "SELECT l.loan_id, m.name, b.title, DATEDIFF('2026-11-23', l.due_date) AS overdue_days FROM loan AS l JOIN member AS m ON m.member_id = l.member_id JOIN owned_book AS o ON o.owned_id = l.owned_id JOIN book AS b ON b.book_id = o.book_id WHERE l.return_date IS NULL AND l.due_date < '2026-11-23' ORDER BY l.loan_id LIMIT 201",
+        "columns": [
+          "loan_id",
+          "name",
+          "title",
+          "overdue_days"
+        ],
+        "rows": [
+          {
+            "loan_id": 2,
+            "name": "테스트회원02",
+            "title": "처음 배우는 SQL",
+            "overdue_days": 6
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          253,
+          8
+        ],
+        "row_count": 1,
+        "truncated": false,
+        "execution_ms": 0.95
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L3-03",
+      "level": 3,
+      "question": "지금까지 가장 많이 대출된 도서의 도서번호, 제목, 누적 대출 횟수를 보여줘. 공동 1위는 모두 포함하고 도서번호 순으로 정렬해.",
+      "intent": "소장본을 도서별 합산하고 공동 순위 보존",
+      "ordered": true,
+      "reference_sql": "SELECT b.book_id,b.title,COUNT(l.loan_id) AS loan_count FROM book b JOIN owned_book o ON o.book_id=b.book_id JOIN loan l ON l.owned_id=o.owned_id GROUP BY b.book_id,b.title HAVING COUNT(l.loan_id) = (SELECT MAX(t.cnt) FROM (SELECT COUNT(l2.loan_id) AS cnt FROM owned_book o2 JOIN loan l2 ON l2.owned_id=o2.owned_id GROUP BY o2.book_id) t) ORDER BY b.book_id",
+      "reference_result": {
+        "sql": "SELECT b.book_id, b.title, COUNT(l.loan_id) AS loan_count FROM book AS b JOIN owned_book AS o ON o.book_id = b.book_id JOIN loan AS l ON l.owned_id = o.owned_id GROUP BY b.book_id, b.title HAVING COUNT(l.loan_id) = (SELECT MAX(t.cnt) FROM (SELECT COUNT(l2.loan_id) AS cnt FROM owned_book AS o2 JOIN loan AS l2 ON l2.owned_id = o2.owned_id GROUP BY o2.book_id) AS t) ORDER BY b.book_id LIMIT 201",
+        "columns": [
+          "book_id",
+          "title",
+          "loan_count"
+        ],
+        "rows": [
+          {
+            "book_id": 1,
+            "title": "데이터베이스 설계 실습",
+            "loan_count": 3
+          },
+          {
+            "book_id": 2,
+            "title": "처음 배우는 SQL",
+            "loan_count": 3
+          }
+        ],
+        "column_types": [
+          3,
+          253,
+          8
+        ],
+        "row_count": 2,
+        "truncated": false,
+        "execution_ms": 1.46
+      },
+      "status": "reference_executed",
+      "correct": null
+    },
+    {
+      "id": "L3-04",
+      "level": 3,
+      "question": "대출 이력은 있지만 현재 빌린 책은 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",
+      "intent": "이력 존재와 미반납 부재의 차이",
+      "ordered": true,
+      "reference_sql": "SELECT m.member_id,m.name FROM member m WHERE EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) AND NOT EXISTS (SELECT 1 FROM loan l2 WHERE l2.member_id=m.member_id AND l2.return_date IS NULL) ORDER BY m.member_id",
+      "reference_result": {
+        "sql": "SELECT m.member_id, m.name FROM member AS m WHERE EXISTS(SELECT 1 FROM loan AS l WHERE l.member_id = m.member_id) AND NOT EXISTS(SELECT 1 FROM loan AS l2 WHERE l2.member_id = m.member_id AND l2.return_date IS NULL) ORDER BY m.member_id LIMIT 201",
+        "columns": [
+          "member_id",
+          "name"
+        ],
+        "rows": [
+          {
+            "member_id": 5,
+            "name": "테스트회원05"
+          },
+          {
+            "member_id": 6,
+            "name": "테스트회원06"
+          },
+          {
+            "member_id": 7,
+            "name": "테스트회원07"
+          }
+        ],
+        "column_types": [
+          3,
+          253
+        ],
+        "row_count": 3,
+        "truncated": false,
+        "execution_ms": 0.93
+      },
+      "status": "reference_executed",
+      "correct": null
+    }
+  ],
+  "summary": {
+    "references_executed": 12,
+    "accuracy": null,
+    "api_calls": 0
+  }
+}

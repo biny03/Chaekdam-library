@@ -9,8 +9,8 @@
 Python 3.11 이상과 실행 중인 MySQL 8.0.16 이상이 필요합니다. 저장소를 내려받은 뒤 프로젝트 폴더에서 PowerShell로 실행합니다.
 
 ```powershell
-git clone https://github.com/bBiny/chaekdam-library.git
-cd chaekdam-library
+git clone https://github.com/biny03/Chaekdam-library.git
+cd Chaekdam-library
 ```
 
 ```powershell

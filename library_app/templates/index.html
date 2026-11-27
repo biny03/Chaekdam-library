@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#132b3d">
+  <title>책담 | 도서 관리</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <div id="announcement" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <main id="login-screen" class="login-layout">
+    <section class="login-intro" aria-labelledby="brand-title">
+      <div class="wordmark"><span class="brand-icon" aria-hidden="true">冊</span> 책담</div>
+      <div class="intro-copy"><span class="eyebrow">도서 관리 프로그램</span><h1 id="brand-title">한 권의 책부터,<br>하나의 기록까지.</h1><p>도서와 회원을 연결하고<br>대출부터 반납까지 기록합니다.</p></div>
+      <div class="intro-bottom"><span>데이터베이스 설계 · 6조</span><span>통합형 A + B</span></div>
+    </section>
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login-card"><span class="eyebrow">LIBRARY MANAGEMENT</span><h2 id="login-title">로그인</h2><p class="muted">책담 계정으로 로그인하세요.</p>
+        <form id="login-form">
+          <label for="login-id">아이디</label><input id="login-id" name="login_id" autocomplete="username" required maxlength="30" placeholder="아이디를 입력하세요">
+          <label for="login-password">비밀번호</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="비밀번호를 입력하세요">
+          <p id="login-error" class="field-error" role="alert" hidden></p>
+          <button class="button primary full" type="submit">로그인</button>
+        </form>
+        <button id="signup-open" class="button secondary full" type="button">회원가입</button>
+        <p class="login-note">과제용 데이터 · 학교 실제 대출정보와 무관</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="app-shell" class="app-shell" hidden>
+    <aside class="sidebar" aria-label="서비스 메뉴">
+      <a class="wordmark" href="#dashboard"><span class="brand-icon" aria-hidden="true">冊</span> 책담</a>
+      <p class="sidebar-subtitle">도서 관리 프로그램</p>
+      <nav id="navigation" aria-label="주 메뉴">
+        <a href="#dashboard" data-page="dashboard"><span class="nav-symbol" aria-hidden="true">◫</span>대시보드</a>
+        <a href="#books" data-page="books"><span class="nav-symbol" aria-hidden="true">▤</span>도서 목록</a>
+        <a href="#members" data-page="members" data-admin><span class="nav-symbol" aria-hidden="true">◎</span>회원 관리</a>
+        <a href="#loans" data-page="loans"><span class="nav-symbol" aria-hidden="true">⇄</span><span id="loan-nav-label">대출 · 반납</span></a>
+        <span class="nav-divider" data-admin></span>
+        <a href="#external" data-page="external" data-admin><span class="nav-symbol" aria-hidden="true">↗</span>외부 도서 등록</a>
+        <a href="#nl2sql" data-page="nl2sql" data-admin><span class="nav-symbol" aria-hidden="true">⌘</span>자연어 SQL 조회</a>
+      </nav>
+      <div class="sidebar-bottom"><span class="live-dot" aria-hidden="true"></span><span>데이터베이스 설계 프로젝트<br><small>6조 · 통합형 A + B</small></span></div>
+    </aside>
+    <div class="app-body">
+      <header class="topbar"><p>과제용 데이터 <span>· 학교 실제 대출정보와 무관</span></p><div class="account-bar"><span id="user-role" class="badge"></span><span id="user-name"></span><button id="logout-button" class="text-button" type="button">로그아웃</button></div></header>
+      <main id="main" class="main-content" tabindex="-1">
+        <section id="page-dashboard" class="page" aria-labelledby="dashboard-title">
+          <div class="page-heading"><div><p class="eyebrow">OVERVIEW</p><h1 id="dashboard-title">도서관 한눈에 보기</h1><p class="muted" id="dashboard-greeting">오늘의 도서와 대출 현황을 확인하세요.</p></div><span class="today" id="today-label"></span></div>
+          <div class="stats-grid" id="stats-grid" aria-live="polite"></div>
+          <div class="dashboard-grid"><section class="panel"><div class="panel-heading"><h2 id="dashboard-loans-title">진행 중인 대출</h2><a href="#loans">전체 보기 <span aria-hidden="true">→</span></a></div><div id="dashboard-loans" class="table-container"></div></section>
+          <section class="panel guide-panel"><p class="eyebrow">이용 안내</p><h2>필요한 업무를<br>빠르게 시작하세요.</h2><div id="quick-actions" class="quick-actions"></div><div class="policy-note" id="policy-note"></div></section></div>
+        </section>
+
+        <section id="page-books" class="page" hidden aria-labelledby="books-title">
+          <div class="page-heading"><div><p class="eyebrow">CATALOG</p><h1 id="books-title">도서 목록</h1><p class="muted">도서정보와 실제 소장한 책을 함께 확인합니다.</p></div><button id="add-book" class="button primary" data-admin type="button">+ 도서 등록</button></div>
+          <form id="book-search" class="filter-bar"><div class="search-field"><label class="sr-only" for="book-query">도서 자연어 검색</label><input id="book-query" name="q" maxlength="200"></div><label class="sr-only" for="book-category">분류</label><input id="book-category" name="category" class="category-input" placeholder="분류 (선택)"><button class="button primary" type="submit">검색</button><button class="button secondary" type="reset">초기화</button></form>
+          <section class="panel"><div class="panel-heading"><h2>등록 도서 <span id="book-count" class="count"></span></h2><span class="muted small-text">제목을 눌러 소장 도서를 확인하세요.</span></div><div id="books-table" class="table-container"></div></section>
+        </section>
+
+        <section id="page-members" class="page" hidden aria-labelledby="members-title">
+          <div class="page-heading"><div><p class="eyebrow">MEMBERS</p><h1 id="members-title">회원 관리</h1><p class="muted">회원 정보와 이용 상태, 로그인 계정을 관리합니다.</p></div><button id="add-member" class="button primary" type="button">+ 회원 등록</button></div>
+          <form id="member-search" class="filter-bar"><div class="search-field"><label class="sr-only" for="member-query">회원 검색</label><input id="member-query" name="q" placeholder="회원 이름 또는 번호로 검색"></div><button class="button primary" type="submit">검색</button></form>
+          <section class="panel"><div class="panel-heading"><h2>회원 목록 <span id="member-count" class="count"></span></h2></div><div id="members-table" class="table-container"></div></section>
+        </section>
+
+        <section id="page-loans" class="page" hidden aria-labelledby="loans-title">
+          <div class="page-heading"><div><p class="eyebrow">CIRCULATION</p><h1 id="loans-title">대출 · 반납</h1><p class="muted">대출 상태와 반납 예정일을 확인합니다.</p></div><button id="add-loan" class="button primary" data-admin type="button">+ 대출 처리</button></div>
+          <section class="panel"><div class="panel-heading"><h2>대출 신청 내역</h2></div><div id="requests-table" class="table-container"></div></section>
+          <div id="loan-filters" class="filter-tabs" role="group" aria-label="대출 상태 필터"><button type="button" data-filter="all" aria-pressed="true">전체 내역</button><button type="button" data-filter="active" aria-pressed="false">대출 중</button><button type="button" data-filter="overdue" aria-pressed="false">연체</button></div>
+          <form id="loan-member-filter" class="filter-bar" data-admin><label for="loan-member-id">회원번호</label><input id="loan-member-id" name="member_id" type="number" min="1" placeholder="비워 두면 전체 회원"><button class="button secondary" type="submit">회원 내역 조회</button></form>
+          <section class="panel"><div class="panel-heading"><h2>대출 내역 <span id="loan-count" class="count"></span></h2><span class="muted small-text">반납 예정일 당일은 연체에 포함하지 않습니다.</span></div><div id="loans-table" class="table-container"></div></section>
+        </section>
+
+        <section id="page-external" class="page" hidden aria-labelledby="external-title">
+          <div class="page-heading"><div><p class="eyebrow">BOOK METADATA API</p><h1 id="external-title">외부 도서 등록</h1><p class="muted">국립중앙도서관에서 서지정보를 검색해 등록합니다.</p></div><span id="book-api-status" class="badge"></span></div>
+          <p id="book-api-notice" class="notice" hidden>국립중앙도서관 인증키가 설정되지 않았습니다. 서버의 .env에 NL_API_KEY를 입력하고 다시 시작하세요. 도서 목록에서는 직접 등록할 수 있습니다.</p>
+          <form id="external-search" class="filter-bar"><label class="sr-only" for="external-by">검색 기준</label><select id="external-by" name="by"><option value="isbn">ISBN</option><option value="title">도서명</option></select><div class="search-field"><label class="sr-only" for="external-query">외부 도서 검색어</label><input id="external-query" name="q" required placeholder="ISBN 또는 도서명을 입력하세요"></div><button class="button primary" type="submit">API 검색</button></form>
+          <section class="panel"><div class="panel-heading"><h2>검색 결과 <span id="external-count" class="count"></span></h2></div><p class="panel-description">검색 결과는 서지정보입니다. 공주대의 소장 수량과 대출 상태를 제공하지 않습니다. 출판예정일과 실제 출판일은 따로 확인하세요.</p><div id="external-table" class="table-container"><div class="empty-state"><span aria-hidden="true">↗</span><h3>필요한 책을 찾아보세요.</h3><p>ISBN이나 도서명으로 검색한 뒤 등록할 책을 선택합니다.</p></div></div></section>
+        </section>
+
+        <section id="page-nl2sql" class="page" hidden aria-labelledby="nl2sql-title">
+          <div class="page-heading"><div><p class="eyebrow">NATURAL LANGUAGE TO SQL</p><h1 id="nl2sql-title">자연어 SQL 조회</h1><p class="muted">질문을 SQL로 변환하고, 조회 결과를 확인합니다.</p></div><span id="openai-status" class="badge"></span></div>
+          <p id="openai-notice" class="notice" hidden>OpenAI API 키가 설정되지 않았습니다. 서버의 .env에 OPENAI_API_KEY를 입력하고 다시 시작하세요. 실제 모델 호출 전에는 SQL이나 평가 결과를 생성하지 않습니다.</p>
+          <section class="panel query-panel"><form id="nl2sql-form"><div class="query-label-row"><label for="natural-question">어떤 정보가 궁금한가요?</label><span class="badge neutral">관리자 전용 · 조회만 허용</span></div><textarea id="natural-question" name="question" rows="3" required maxlength="1000" placeholder="예: 현재 연체 중인 회원의 이름과 도서 제목을 알려줘"></textarea><div class="question-examples"><button type="button" data-question="《데이터베이스 설계 실습》은 어느 서가에 있어?">책 위치 찾기</button><button type="button" data-question="분류가 수학인 도서의 제목을 보여줘">수학책 찾기</button><button type="button" data-question="현재 연체 중인 회원의 이름과 도서 제목을 알려줘">현재 연체 현황</button><button type="button" data-question="대출 횟수가 많은 도서 5종을 알려줘">많이 빌린 도서</button></div><div class="query-footer"><div><label for="prompt-mode">프롬프트 방식</label><select id="prompt-mode" name="prompt_mode"><option value="enhanced">스키마·업무 규칙 보강</option><option value="simple">기본 스키마만 제공</option></select></div><button class="button primary" type="submit">질문 실행 <span aria-hidden="true">→</span></button></div></form></section>
+          <div id="nl2sql-results" hidden><section class="panel sql-panel"><div class="panel-heading"><h2>생성된 SQL</h2><button id="copy-sql" class="button secondary small" type="button">SQL 복사</button></div><pre><code id="generated-sql"></code></pre><p id="sql-meta" class="query-meta"></p></section><section class="panel"><div class="panel-heading"><h2>조회 결과 <span id="result-count" class="count"></span></h2></div><div id="result-table" class="table-container"></div></section></div>
+          <p class="bottom-note">동일한 질문에 두 방식을 적용해 비교할 수 있습니다. 정답 SQL과의 전체 비교 평가는 프로젝트의 평가 실행 명령으로 저장합니다.</p>
+        </section>
+        <footer class="page-footer"><span>책담 · 도서 관리 프로그램</span><span>데이터베이스 설계 TERM PROJECT · 6조</span></footer>
+      </main>
+    </div>
+  </div>
+  <dialog id="app-dialog" class="app-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><h2 id="dialog-title"></h2><button id="dialog-close" class="icon-button" type="button" aria-label="창 닫기">×</button></div><div id="dialog-content"></div></dialog>
+</body>
+</html>

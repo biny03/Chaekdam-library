@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "관리자 로그인과 실제 DB 대시보드 18종 표시",
+      "status": "PASS"
+    },
+    {
+      "name": "도서 1종에 소장본 2권이 연결되는 상세 화면",
+      "status": "PASS"
+    },
+    {
+      "name": "ISBN 없이 새 도서와 개별 소장 도서 등록",
+      "status": "PASS"
+    },
+    {
+      "name": "회원 등록 후 실제 목록 반영",
+      "status": "PASS"
+    },
+    {
+      "name": "화면에서 대출 생성과 반납 처리",
+      "status": "PASS"
+    },
+    {
+      "name": "관리자 회원번호별 대출 이력 조회",
+      "status": "PASS"
+    },
+    {
+      "name": "도서 API 인증키 누락 안내와 가짜 결과 없음",
+      "status": "PASS"
+    },
+    {
+      "name": "OpenAI 키 누락 안내와 미실행 SQL 결과 숨김",
+      "status": "PASS"
+    },
+    {
+      "name": "400px 모바일 화면 가로 넘침 없음",
+      "status": "PASS"
+    },
+    {
+      "name": "회원 메뉴 제한과 서버 측 관리자 API 403",
+      "status": "PASS"
+    },
+    {
+      "name": "브라우저 JavaScript 런타임 오류 없음",
+      "status": "PASS"
+    }
+  ]
+}

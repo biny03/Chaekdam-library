@@ -1,0 +1,239 @@
+﻿id,level,question,prompt_mode,model,reference_sql,generated_sql,status,correct,comparison,error,elapsed_ms
+L1-01,1,"분류가 컴퓨터인 도서의 도서번호, 제목을 도서번호 오름차순으로 보여줘.",simple,qwen2.5-coder:3b,"SELECT book_id, title FROM book WHERE category = '컴퓨터' ORDER BY book_id","SELECT book.book_id, book.title
+FROM book
+JOIN owned_book ON book.book_id = owned_book.book_id
+WHERE book.category = '컴퓨터'
+ORDER BY book.book_id ASC;",semantic_error,False,값 또는 행 순서 불일치,,2546.2
+L1-01,1,"분류가 컴퓨터인 도서의 도서번호, 제목을 도서번호 오름차순으로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT book_id, title FROM book WHERE category = '컴퓨터' ORDER BY book_id","SELECT book_id, title
+FROM book
+WHERE category = '컴퓨터'
+ORDER BY book_id ASC;",correct,True,일치,,1637.77
+L1-02,1,"정상 이용 상태인 회원의 회원번호, 이름을 회원번호 순서로 보여줘.",simple,qwen2.5-coder:3b,"SELECT member_id, name FROM member WHERE status = 'ACTIVE' ORDER BY member_id","SELECT m.member_id, m.name
+FROM member m
+JOIN loan l ON m.member_id = l.member_id
+WHERE m.status = 'active' AND l.return_date IS NULL AND l.due_date > '2026-11-23'
+ORDER BY m.member_id;",semantic_error,False,값 또는 행 순서 불일치,,3720.42
+L1-02,1,"정상 이용 상태인 회원의 회원번호, 이름을 회원번호 순서로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT member_id, name FROM member WHERE status = 'ACTIVE' ORDER BY member_id","SELECT member_id AS member_number, name AS member_name
+FROM member
+WHERE status = 'ACTIVE'
+ORDER BY member_id;",correct,True,일치,,1835.82
+L1-03,1,ISBN이 등록되지 않은 도서의 도서번호와 제목을 도서번호 순으로 보여줘.,simple,qwen2.5-coder:3b,"SELECT book_id, title FROM book WHERE isbn IS NULL ORDER BY book_id","SELECT book_id, title
+FROM book
+WHERE isbn IS NULL
+ORDER BY book_id;",correct,True,일치,,1479.12
+L1-03,1,ISBN이 등록되지 않은 도서의 도서번호와 제목을 도서번호 순으로 보여줘.,enhanced,qwen2.5-coder:3b,"SELECT book_id, title FROM book WHERE isbn IS NULL ORDER BY book_id","SELECT book_id, title
+FROM book
+WHERE isbn IS NULL
+ORDER BY book_id;",correct,True,일치,,1419.87
+L1-04,1,분실 상태인 소장 도서의 관리번호와 보관위치를 관리번호 순으로 보여줘.,simple,qwen2.5-coder:3b,"SELECT owned_id, location FROM owned_book WHERE status = 'LOST' ORDER BY owned_id","SELECT owned_id AS 관리번호, location AS 보관위치
+FROM owned_book
+WHERE status = '분실';",semantic_error,False,값 또는 행 순서 불일치,,1806.15
+L1-04,1,분실 상태인 소장 도서의 관리번호와 보관위치를 관리번호 순으로 보여줘.,enhanced,qwen2.5-coder:3b,"SELECT owned_id, location FROM owned_book WHERE status = 'LOST' ORDER BY owned_id","SELECT owned_id AS 관리번호, location AS 보관위치
+FROM owned_book
+WHERE status = 'LOST'
+ORDER BY 관리번호;",correct,True,일치,,2146.65
+L2-01,2,"미반납 대출의 대출번호, 회원 이름, 도서 제목, 반납예정일을 대출번호 순으로 보여줘.",simple,qwen2.5-coder:3b,"SELECT l.loan_id, m.name, b.title, l.due_date FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL ORDER BY l.loan_id","SELECT 
+    l.loan_id AS loan_number,
+    m.name AS member_name,
+    b.title AS book_title,
+    l.due_date AS due_date
+FROM 
+    loan l
+JOIN 
+    member m ON l.member_id = m.member_id
+JOIN 
+    owned_book ob ON l.owned_id = ob.owned_id
+JOIN 
+    book b ON ob.book_id = b.book_id
+WHERE 
+    l.return_date IS NULL
+ORDER BY 
+    l.loan_id;",correct,True,일치,,6392.1
+L2-01,2,"미반납 대출의 대출번호, 회원 이름, 도서 제목, 반납예정일을 대출번호 순으로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT l.loan_id, m.name, b.title, l.due_date FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL ORDER BY l.loan_id","SELECT 
+    l.loan_id,
+    m.name,
+    b.title,
+    l.due_date
+FROM 
+    loan l
+JOIN 
+    member m ON l.member_id = m.member_id
+JOIN 
+    owned_book ob ON l.owned_id = ob.owned_id
+JOIN 
+    book b ON ob.book_id = b.book_id
+WHERE 
+    l.return_date IS NULL
+ORDER BY 
+    l.loan_id;",correct,True,일치,,5734.94
+L2-02,2,"모든 도서의 도서번호, 제목, 정상 소장 권수를 도서번호 순으로 보여줘. 정상 소장본이 없는 도서는 0권으로 표시해.",simple,qwen2.5-coder:3b,"SELECT b.book_id, b.title, COUNT(o.owned_id) AS normal_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' GROUP BY b.book_id,b.title ORDER BY b.book_id","SELECT 
+    b.book_id AS book_id,
+    b.title AS title,
+    COALESCE(COUNT(ob.owned_id), 0) AS normal_stored_count
+FROM 
+    book b
+LEFT JOIN 
+    owned_book ob ON b.book_id = ob.book_id
+WHERE 
+    ob.status = 'normal'
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    b.book_id;",semantic_error,False,값 또는 행 순서 불일치,,5097.02
+L2-02,2,"모든 도서의 도서번호, 제목, 정상 소장 권수를 도서번호 순으로 보여줘. 정상 소장본이 없는 도서는 0권으로 표시해.",enhanced,qwen2.5-coder:3b,"SELECT b.book_id, b.title, COUNT(o.owned_id) AS normal_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' GROUP BY b.book_id,b.title ORDER BY b.book_id","SELECT 
+    b.book_id,
+    b.title,
+    COALESCE(COUNT(owned_book.owned_id), 0) AS normal_holding_count
+FROM 
+    book b
+LEFT JOIN 
+    owned_book ob ON b.book_id = ob.book_id
+WHERE 
+    ob.status = 'NORMAL'
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    b.book_id;",failed,False,SQL 생성·검증·실행 단계 실패,SQL 실행에 실패했습니다 (DB 오류 1054). 생성 SQL과 스키마를 확인하세요.,5425.93
+L2-03,2,"모든 회원의 회원번호, 이름, 지금 빌린 책 수를 회원번호 순으로 보여줘. 현재 대출이 없는 회원도 0권으로 표시해.",simple,qwen2.5-coder:3b,"SELECT m.member_id,m.name,COUNT(l.loan_id) AS current_count FROM member m LEFT JOIN loan l ON l.member_id=m.member_id AND l.return_date IS NULL GROUP BY m.member_id,m.name ORDER BY m.member_id","SELECT 
+    m.member_id AS member_id,
+    m.name AS member_name,
+    COALESCE(COUNT(l.loan_id), 0) AS loan_count
+FROM 
+    member m
+LEFT JOIN 
+    loan l ON m.member_id = l.member_id
+WHERE 
+    l.return_date IS NULL OR l.return_date > '2026-11-23'
+GROUP BY 
+    m.member_id, m.name
+ORDER BY 
+    m.member_id;",semantic_error,False,값 또는 행 순서 불일치,,5773.52
+L2-03,2,"모든 회원의 회원번호, 이름, 지금 빌린 책 수를 회원번호 순으로 보여줘. 현재 대출이 없는 회원도 0권으로 표시해.",enhanced,qwen2.5-coder:3b,"SELECT m.member_id,m.name,COUNT(l.loan_id) AS current_count FROM member m LEFT JOIN loan l ON l.member_id=m.member_id AND l.return_date IS NULL GROUP BY m.member_id,m.name ORDER BY m.member_id","SELECT 
+    m.member_id AS member_id,
+    m.name AS name,
+    COALESCE(COUNT(l.loan_id), 0) AS current_borrowed_count
+FROM 
+    member m
+LEFT JOIN 
+    loan l ON m.member_id = l.member_id
+WHERE 
+    l.return_date IS NULL OR l.open_flag IS NULL
+GROUP BY 
+    m.member_id, m.name
+ORDER BY 
+    m.member_id;",semantic_error,False,값 또는 행 순서 불일치,,5789.25
+L2-04,2,"대출 이력이 한 번도 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",simple,qwen2.5-coder:3b,"SELECT m.member_id,m.name FROM member m WHERE NOT EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) ORDER BY m.member_id","SELECT m.member_id, m.name
+FROM member m
+LEFT JOIN loan l ON m.member_id = l.member_id
+WHERE l.loan_id IS NULL
+ORDER BY m.member_id;",correct,True,일치,,2435.94
+L2-04,2,"대출 이력이 한 번도 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT m.member_id,m.name FROM member m WHERE NOT EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) ORDER BY m.member_id","SELECT m.member_id, m.name
+FROM member m
+LEFT JOIN loan l ON m.member_id = l.member_id
+WHERE l.loan_id IS NULL
+ORDER BY m.member_id;",correct,True,일치,,2853.34
+L3-01,3,"모든 도서의 도서번호, 제목, 지금 대출 가능한 권수를 도서번호 순으로 알려줘. 대출 가능한 책이 없어도 0으로 보여줘.",simple,qwen2.5-coder:3b,"SELECT b.book_id,b.title,COUNT(o.owned_id) AS available_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' AND NOT EXISTS (SELECT 1 FROM loan l WHERE l.owned_id=o.owned_id AND l.return_date IS NULL) GROUP BY b.book_id,b.title ORDER BY b.book_id","SELECT 
+    b.book_id,
+    b.title,
+    COALESCE(COUNT(l.loan_id), 0) AS available_count
+FROM 
+    book b
+LEFT JOIN 
+    loan l ON b.book_id = l.book_id AND l.return_date IS NULL
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    b.book_id;",failed,False,SQL 생성·검증·실행 단계 실패,loan에서 사용할 수 없는 컬럼입니다: book_id,4402.9
+L3-01,3,"모든 도서의 도서번호, 제목, 지금 대출 가능한 권수를 도서번호 순으로 알려줘. 대출 가능한 책이 없어도 0으로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT b.book_id,b.title,COUNT(o.owned_id) AS available_count FROM book b LEFT JOIN owned_book o ON o.book_id=b.book_id AND o.status='NORMAL' AND NOT EXISTS (SELECT 1 FROM loan l WHERE l.owned_id=o.owned_id AND l.return_date IS NULL) GROUP BY b.book_id,b.title ORDER BY b.book_id","SELECT 
+    b.book_id,
+    b.title,
+    COALESCE(COUNT(owned_book.owned_id), 0) AS available_count
+FROM 
+    book b
+LEFT JOIN 
+    owned_book ob ON b.book_id = ob.book_id
+WHERE 
+    ob.status = 'NORMAL' AND (ob.return_date IS NULL OR ob.return_date > '2026-11-23')
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    b.book_id;",failed,False,SQL 생성·검증·실행 단계 실패,owned_book에서 사용할 수 없는 컬럼입니다: return_date,6693.36
+L3-02,3,"현재 연체 중인 대출의 대출번호, 회원 이름, 도서 제목, 연체 일수를 대출번호 순으로 보여줘. 오늘이 반납예정일인 책과 이미 반납한 책은 제외해.",simple,qwen2.5-coder:3b,"SELECT l.loan_id,m.name,b.title,DATEDIFF('2026-11-23',l.due_date) AS overdue_days FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL AND l.due_date < '2026-11-23' ORDER BY l.loan_id","SELECT 
+    l.loan_id AS loan_number,
+    m.name AS member_name,
+    b.title AS book_title,
+    DATEDIFF(l.due_date, l.loan_date) AS overdue_days
+FROM 
+    loan l
+JOIN 
+    member m ON l.member_id = m.member_id
+JOIN 
+    owned_book ob ON l.owned_id = ob.owned_id
+JOIN 
+    book b ON ob.book_id = b.book_id
+WHERE 
+    l.return_date IS NULL
+    AND l.due_date < '2026-11-23'
+ORDER BY 
+    l.loan_id;",semantic_error,False,값 또는 행 순서 불일치,,8167.12
+L3-02,3,"현재 연체 중인 대출의 대출번호, 회원 이름, 도서 제목, 연체 일수를 대출번호 순으로 보여줘. 오늘이 반납예정일인 책과 이미 반납한 책은 제외해.",enhanced,qwen2.5-coder:3b,"SELECT l.loan_id,m.name,b.title,DATEDIFF('2026-11-23',l.due_date) AS overdue_days FROM loan l JOIN member m ON m.member_id=l.member_id JOIN owned_book o ON o.owned_id=l.owned_id JOIN book b ON b.book_id=o.book_id WHERE l.return_date IS NULL AND l.due_date < '2026-11-23' ORDER BY l.loan_id","SELECT 
+    l.loan_id,
+    m.name,
+    b.title,
+    DATEDIFF('2026-11-23', l.due_date) AS overdue_days
+FROM 
+    loan l
+JOIN 
+    member m ON l.member_id = m.member_id
+JOIN 
+    owned_book ob ON l.owned_id = ob.owned_id
+JOIN 
+    book b ON ob.book_id = b.book_id
+WHERE 
+    l.return_date IS NULL AND l.due_date < '2026-11-23'
+ORDER BY 
+    l.loan_id;",correct,True,일치,,8062.51
+L3-03,3,"지금까지 가장 많이 대출된 도서의 도서번호, 제목, 누적 대출 횟수를 보여줘. 공동 1위는 모두 포함하고 도서번호 순으로 정렬해.",simple,qwen2.5-coder:3b,"SELECT b.book_id,b.title,COUNT(l.loan_id) AS loan_count FROM book b JOIN owned_book o ON o.book_id=b.book_id JOIN loan l ON l.owned_id=o.owned_id GROUP BY b.book_id,b.title HAVING COUNT(l.loan_id) = (SELECT MAX(t.cnt) FROM (SELECT COUNT(l2.loan_id) AS cnt FROM owned_book o2 JOIN loan l2 ON l2.owned_id=o2.owned_id GROUP BY o2.book_id) t) ORDER BY b.book_id","SELECT 
+    b.book_id AS book_id,
+    b.title AS title,
+    COUNT(l.loan_id) AS total_loans
+FROM 
+    book b
+JOIN 
+    loan l ON b.book_id = l.book_id
+WHERE 
+    l.return_date IS NULL OR l.return_date >= '2026-11-23'
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    total_loans DESC, b.book_id ASC
+LIMIT 1;",failed,False,SQL 생성·검증·실행 단계 실패,loan에서 사용할 수 없는 컬럼입니다: book_id,6008.72
+L3-03,3,"지금까지 가장 많이 대출된 도서의 도서번호, 제목, 누적 대출 횟수를 보여줘. 공동 1위는 모두 포함하고 도서번호 순으로 정렬해.",enhanced,qwen2.5-coder:3b,"SELECT b.book_id,b.title,COUNT(l.loan_id) AS loan_count FROM book b JOIN owned_book o ON o.book_id=b.book_id JOIN loan l ON l.owned_id=o.owned_id GROUP BY b.book_id,b.title HAVING COUNT(l.loan_id) = (SELECT MAX(t.cnt) FROM (SELECT COUNT(l2.loan_id) AS cnt FROM owned_book o2 JOIN loan l2 ON l2.owned_id=o2.owned_id GROUP BY o2.book_id) t) ORDER BY b.book_id","SELECT 
+    b.book_id,
+    b.title,
+    COUNT(l.loan_id) AS total_loan_count
+FROM 
+    book b
+LEFT JOIN 
+    owned_book ob ON b.book_id = ob.book_id
+LEFT JOIN 
+    loan l ON ob.owned_id = l.owned_id
+WHERE 
+    l.return_date IS NULL OR l.due_date < '2026-11-23'
+GROUP BY 
+    b.book_id, b.title
+ORDER BY 
+    total_loan_count DESC, b.book_id ASC
+LIMIT 1;",semantic_error,False,값 또는 행 순서 불일치,,7392.72
+L3-04,3,"대출 이력은 있지만 현재 빌린 책은 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",simple,qwen2.5-coder:3b,"SELECT m.member_id,m.name FROM member m WHERE EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) AND NOT EXISTS (SELECT 1 FROM loan l2 WHERE l2.member_id=m.member_id AND l2.return_date IS NULL) ORDER BY m.member_id","SELECT m.member_id, m.name
+FROM member m
+JOIN loan l ON m.member_id = l.member_id
+WHERE l.return_date IS NULL AND l.open_flag = 1
+GROUP BY m.member_id, m.name
+ORDER BY m.member_id;",semantic_error,False,값 또는 행 순서 불일치,,3464.51
+L3-04,3,"대출 이력은 있지만 현재 빌린 책은 없는 회원의 회원번호, 이름을 회원번호 순으로 보여줘.",enhanced,qwen2.5-coder:3b,"SELECT m.member_id,m.name FROM member m WHERE EXISTS (SELECT 1 FROM loan l WHERE l.member_id=m.member_id) AND NOT EXISTS (SELECT 1 FROM loan l2 WHERE l2.member_id=m.member_id AND l2.return_date IS NULL) ORDER BY m.member_id","SELECT m.member_id, m.name
+FROM member m
+LEFT JOIN loan l ON m.member_id = l.member_id
+WHERE l.loan_id IS NOT NULL AND l.return_date IS NULL
+GROUP BY m.member_id, m.name
+HAVING COUNT(l.loan_id) = 0;",semantic_error,False,값 또는 행 순서 불일치,,4370.25
